@@ -1,173 +1,162 @@
-import java.util.Scanner;
+# Payroll Management System
+# Without Classes and Objects
 
-class Employee {
-    int id;
-    String name;
-    double basicSalary;
-    double hra;
-    double da;
-    double tax;
+employees = []
 
-    Employee(int id, String name, double basicSalary) {
-        this.id = id;
-        this.name = name;
-        this.basicSalary = basicSalary;
 
-        // Salary calculations
-        this.hra = basicSalary * 0.20;   // 20% HRA
-        this.da = basicSalary * 0.10;    // 10% DA
-        this.tax = basicSalary * 0.05;   // 5% Tax
-    }
+# Add Employee
+def add_employee():
+    employee_id = int(input("Enter Employee ID: "))
+    name = input("Enter Employee Name: ")
+    basic_salary = float(input("Enter Basic Salary: "))
 
-    double getGrossSalary() {
-        return basicSalary + hra + da;
-    }
+    hra = basic_salary * 0.20
+    da = basic_salary * 0.10
+    tax = basic_salary * 0.05
 
-    double getNetSalary() {
-        return getGrossSalary() - tax;
-    }
+    employee = [
+        employee_id,
+        name,
+        basic_salary,
+        hra,
+        da,
+        tax
+    ]
 
-    void display() {
-        System.out.println("-----------------------------------");
-        System.out.println("Employee ID   : " + id);
-        System.out.println("Employee Name : " + name);
-        System.out.println("Basic Salary  : " + basicSalary);
-        System.out.println("HRA           : " + hra);
-        System.out.println("DA            : " + da);
-        System.out.println("Gross Salary  : " + getGrossSalary());
-        System.out.println("Tax           : " + tax);
-        System.out.println("Net Salary    : " + getNetSalary());
-        System.out.println("-----------------------------------");
-    }
-}
+    employees.append(employee)
 
-public class PayrollManagementSystem {
+    print("Employee added successfully!")
 
-    static Scanner sc = new Scanner(System.in);
-    static Employee[] employees = new Employee[100];
-    static int count = 0;
 
-    // Add Employee
-    static void addEmployee() {
-        System.out.print("Enter Employee ID: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+# Display All Employees
+def display_employees():
 
-        System.out.print("Enter Employee Name: ");
-        String name = sc.nextLine();
+    if len(employees) == 0:
+        print("No employees found.")
+        return
 
-        System.out.print("Enter Basic Salary: ");
-        double salary = sc.nextDouble();
+    print("\n===== EMPLOYEE DETAILS =====")
 
-        employees[count] = new Employee(id, name, salary);
-        count++;
+    for employee in employees:
 
-        System.out.println("Employee added successfully!");
-    }
+        employee_id = employee[0]
+        name = employee[1]
+        basic_salary = employee[2]
+        hra = employee[3]
+        da = employee[4]
+        tax = employee[5]
 
-    // Display All Employees
-    static void displayEmployees() {
-        if (count == 0) {
-            System.out.println("No employees found.");
-            return;
-        }
+        gross_salary = basic_salary + hra + da
+        net_salary = gross_salary - tax
 
-        System.out.println("\n===== EMPLOYEE DETAILS =====");
+        print("-----------------------------------")
+        print("Employee ID   :", employee_id)
+        print("Employee Name :", name)
+        print("Basic Salary  :", basic_salary)
+        print("HRA           :", hra)
+        print("DA            :", da)
+        print("Gross Salary  :", gross_salary)
+        print("Tax           :", tax)
+        print("Net Salary    :", net_salary)
+        print("-----------------------------------")
 
-        for (int i = 0; i < count; i++) {
-            employees[i].display();
-        }
-    }
 
-    // Search Employee
-    static void searchEmployee() {
-        System.out.print("Enter Employee ID to search: ");
-        int id = sc.nextInt();
+# Search Employee
+def search_employee():
 
-        for (int i = 0; i < count; i++) {
-            if (employees[i].id == id) {
-                System.out.println("\nEmployee Found:");
-                employees[i].display();
-                return;
-            }
-        }
+    employee_id = int(input("Enter Employee ID to search: "))
 
-        System.out.println("Employee not found.");
-    }
+    for employee in employees:
 
-    // Generate Payroll
-    static void generatePayroll() {
-        System.out.print("Enter Employee ID: ");
-        int id = sc.nextInt();
+        if employee[0] == employee_id:
 
-        for (int i = 0; i < count; i++) {
-            if (employees[i].id == id) {
+            basic_salary = employee[2]
+            hra = employee[3]
+            da = employee[4]
+            tax = employee[5]
 
-                Employee e = employees[i];
+            gross_salary = basic_salary + hra + da
+            net_salary = gross_salary - tax
 
-                System.out.println("\n========== PAYSLIP ==========");
-                System.out.println("Employee ID   : " + e.id);
-                System.out.println("Employee Name : " + e.name);
-                System.out.println("------------------------------");
-                System.out.printf("Basic Salary  : %.2f%n", e.basicSalary);
-                System.out.printf("HRA (20%%)     : %.2f%n", e.hra);
-                System.out.printf("DA (10%%)      : %.2f%n", e.da);
-                System.out.printf("Gross Salary  : %.2f%n", e.getGrossSalary());
-                System.out.printf("Tax (5%%)      : %.2f%n", e.tax);
-                System.out.println("------------------------------");
-                System.out.printf("Net Salary    : %.2f%n", e.getNetSalary());
-                System.out.println("==============================");
+            print("\nEmployee Found:")
+            print("-----------------------------------")
+            print("Employee ID   :", employee[0])
+            print("Employee Name :", employee[1])
+            print("Basic Salary  :", basic_salary)
+            print("HRA           :", hra)
+            print("DA            :", da)
+            print("Gross Salary  :", gross_salary)
+            print("Tax           :", tax)
+            print("Net Salary    :", net_salary)
+            print("-----------------------------------")
 
-                return;
-            }
-        }
+            return
 
-        System.out.println("Employee not found.");
-    }
+    print("Employee not found.")
 
-    public static void main(String[] args) {
 
-        int choice;
+# Generate Payroll
+def generate_payroll():
 
-        do {
-            System.out.println("\n===== PAYROLL MANAGEMENT SYSTEM =====");
-            System.out.println("1. Add Employee");
-            System.out.println("2. Display Employees");
-            System.out.println("3. Search Employee");
-            System.out.println("4. Generate Payroll");
-            System.out.println("5. Exit");
-            System.out.print("Enter your choice: ");
+    employee_id = int(input("Enter Employee ID: "))
 
-            choice = sc.nextInt();
+    for employee in employees:
 
-            switch (choice) {
+        if employee[0] == employee_id:
 
-                case 1:
-                    addEmployee();
-                    break;
+            basic_salary = employee[2]
+            hra = employee[3]
+            da = employee[4]
+            tax = employee[5]
 
-                case 2:
-                    displayEmployees();
-                    break;
+            gross_salary = basic_salary + hra + da
+            net_salary = gross_salary - tax
 
-                case 3:
-                    searchEmployee();
-                    break;
+            print("\n========== PAYSLIP ==========")
+            print("Employee ID   :", employee[0])
+            print("Employee Name :", employee[1])
+            print("------------------------------")
+            print(f"Basic Salary  : {basic_salary:.2f}")
+            print(f"HRA (20%)     : {hra:.2f}")
+            print(f"DA (10%)      : {da:.2f}")
+            print(f"Gross Salary  : {gross_salary:.2f}")
+            print(f"Tax (5%)      : {tax:.2f}")
+            print("------------------------------")
+            print(f"Net Salary    : {net_salary:.2f}")
+            print("==============================")
 
-                case 4:
-                    generatePayroll();
-                    break;
+            return
 
-                case 5:
-                    System.out.println("Thank you for using Payroll Management System!");
-                    break;
+    print("Employee not found.")
 
-                default:
-                    System.out.println("Invalid choice! Please try again.");
-            }
 
-        } while (choice != 5);
+# Main Program
+while True:
 
-        sc.close();
-    }
-}
+    print("\n===== PAYROLL MANAGEMENT SYSTEM =====")
+    print("1. Add Employee")
+    print("2. Display Employees")
+    print("3. Search Employee")
+    print("4. Generate Payroll")
+    print("5. Exit")
+
+    choice = int(input("Enter your choice: "))
+
+    if choice == 1:
+        add_employee()
+
+    elif choice == 2:
+        display_employees()
+
+    elif choice == 3:
+        search_employee()
+
+    elif choice == 4:
+        generate_payroll()
+
+    elif choice == 5:
+        print("Thank you for using Payroll Management System!")
+        break
+
+    else:
+        print("Invalid choice! Please try again.")
