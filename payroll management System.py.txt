@@ -1,12 +1,38 @@
 # Payroll Management System
 # Without Classes and Objects
 
+import random
+
 employees = []
 
 
 # Add Employee
 def add_employee():
-    employee_id = int(input("Enter Employee ID: "))
+    choice = input("Do you have an Employee ID? (yes/no): ").lower()
+
+    if choice == "yes":
+        employee_id = int(input("Enter Employee ID: "))
+
+        # Check for duplicate ID
+        for employee in employees:
+            if employee[0] == employee_id:
+                print("Employee ID already exists!")
+                return
+
+    elif choice == "no":
+        # Generate a unique random ID
+        while True:
+            employee_id = random.randint(1000, 9999)
+
+            if all(employee[0] != employee_id for employee in employees):
+                break
+
+        print("Your Company Employee ID is:", employee_id)
+
+    else:
+        print("Invalid choice! Please enter yes or no.")
+        return
+
     name = input("Enter Employee Name: ")
     basic_salary = float(input("Enter Basic Salary: "))
 
@@ -15,12 +41,7 @@ def add_employee():
     tax = basic_salary * 0.05
 
     employee = [
-        employee_id,
-        name,
-        basic_salary,
-        hra,
-        da,
-        tax
+        employee_id, name, basic_salary, hra, da, tax
     ]
 
     employees.append(employee)
@@ -30,7 +51,6 @@ def add_employee():
 
 # Display All Employees
 def display_employees():
-
     if len(employees) == 0:
         print("No employees found.")
         return
@@ -38,13 +58,7 @@ def display_employees():
     print("\n===== EMPLOYEE DETAILS =====")
 
     for employee in employees:
-
-        employee_id = employee[0]
-        name = employee[1]
-        basic_salary = employee[2]
-        hra = employee[3]
-        da = employee[4]
-        tax = employee[5]
+        employee_id, name, basic_salary, hra, da, tax = employee
 
         gross_salary = basic_salary + hra + da
         net_salary = gross_salary - tax
@@ -63,25 +77,19 @@ def display_employees():
 
 # Search Employee
 def search_employee():
-
     employee_id = int(input("Enter Employee ID to search: "))
 
     for employee in employees:
-
         if employee[0] == employee_id:
-
-            basic_salary = employee[2]
-            hra = employee[3]
-            da = employee[4]
-            tax = employee[5]
+            employee_id, name, basic_salary, hra, da, tax = employee
 
             gross_salary = basic_salary + hra + da
             net_salary = gross_salary - tax
 
             print("\nEmployee Found:")
             print("-----------------------------------")
-            print("Employee ID   :", employee[0])
-            print("Employee Name :", employee[1])
+            print("Employee ID   :", employee_id)
+            print("Employee Name :", name)
             print("Basic Salary  :", basic_salary)
             print("HRA           :", hra)
             print("DA            :", da)
@@ -89,7 +97,6 @@ def search_employee():
             print("Tax           :", tax)
             print("Net Salary    :", net_salary)
             print("-----------------------------------")
-
             return
 
     print("Employee not found.")
@@ -97,24 +104,18 @@ def search_employee():
 
 # Generate Payroll
 def generate_payroll():
-
     employee_id = int(input("Enter Employee ID: "))
 
     for employee in employees:
-
         if employee[0] == employee_id:
-
-            basic_salary = employee[2]
-            hra = employee[3]
-            da = employee[4]
-            tax = employee[5]
+            employee_id, name, basic_salary, hra, da, tax = employee
 
             gross_salary = basic_salary + hra + da
             net_salary = gross_salary - tax
 
             print("\n========== PAYSLIP ==========")
-            print("Employee ID   :", employee[0])
-            print("Employee Name :", employee[1])
+            print("Employee ID   :", employee_id)
+            print("Employee Name :", name)
             print("------------------------------")
             print(f"Basic Salary  : {basic_salary:.2f}")
             print(f"HRA (20%)     : {hra:.2f}")
@@ -124,7 +125,6 @@ def generate_payroll():
             print("------------------------------")
             print(f"Net Salary    : {net_salary:.2f}")
             print("==============================")
-
             return
 
     print("Employee not found.")
@@ -132,7 +132,6 @@ def generate_payroll():
 
 # Main Program
 while True:
-
     print("\n===== PAYROLL MANAGEMENT SYSTEM =====")
     print("1. Add Employee")
     print("2. Display Employees")
@@ -140,23 +139,18 @@ while True:
     print("4. Generate Payroll")
     print("5. Exit")
 
-    choice = int(input("Enter your choice: "))
+    choice = input("Enter your choice: ")
 
-    if choice == 1:
+    if choice == "1":
         add_employee()
-
-    elif choice == 2:
+    elif choice == "2":
         display_employees()
-
-    elif choice == 3:
+    elif choice == "3":
         search_employee()
-
-    elif choice == 4:
+    elif choice == "4":
         generate_payroll()
-
-    elif choice == 5:
+    elif choice == "5":
         print("Thank you for using Payroll Management System!")
         break
-
     else:
         print("Invalid choice! Please try again.")
